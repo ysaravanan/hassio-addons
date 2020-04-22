@@ -2,20 +2,17 @@
 
 # SIGTERM-handler this funciton will be executed when the container receives the SIGTERM signal (when stopping)
 term_handler(){
-	echo "Stopping..."
-	ifdown wlan0
-	ip link set wlan0 down
-	ip addr flush dev wlan0
-	exit 0
+    echo "Stopping..."
+    ifdown $INTERFACE
+    ip link set $INTERFACE down
+    ip addr flush dev $INTERFACE
+    exit 0
 }
 
 # Setup signal handlers
 trap 'term_handler' SIGTERM
 
 echo "Starting..."
-
-echo "Set nmcli managed no"
-nmcli dev set wlan0 managed no
 
 CONFIG_PATH=/data/options.json
 
@@ -25,6 +22,10 @@ CHANNEL=$(jq --raw-output ".channel" $CONFIG_PATH)
 ADDRESS=$(jq --raw-output ".address" $CONFIG_PATH)
 NETMASK=$(jq --raw-output ".netmask" $CONFIG_PATH)
 BROADCAST=$(jq --raw-output ".broadcast" $CONFIG_PATH)
+INTERFACE=$(jq --raw-output ".interface" $CONFIG_PATH)
+
+echo "Set nmcli managed no"
+nmcli dev set $INTERFACE managed no
 
 # Enforces required env variables
 required_vars=(SSID WPA_PASSPHRASE CHANNEL ADDRESS NETMASK BROADCAST)
@@ -48,17 +49,17 @@ echo "channel=$CHANNEL"$'\n' >> /hostapd.conf
 # Setup interface
 echo "Setup interface ..."
 
-#ip link set wlan0 down
-#ip addr flush dev wlan0
-#ip addr add ${IP_ADDRESS}/24 dev wlan0
-#ip link set wlan0 up
+#ip link set $INTERFACE down
+#ip addr flush dev $INTERFACE
+#ip addr add ${IP_ADDRESS}/24 dev $INTERFACE
+#ip link set $INTERFACE up
 
 echo "address $ADDRESS"$'\n' >> /etc/network/interfaces
 echo "netmask $NETMASK"$'\n' >> /etc/network/interfaces
 echo "broadcast $BROADCAST"$'\n' >> /etc/network/interfaces
 
-ifdown wlan0
-ifup wlan0
+ifdown $INTERFACE
+ifup $INTERFACE
 
 echo "Starting HostAP daemon ..."
 hostapd -d /hostapd.conf & wait ${!}
