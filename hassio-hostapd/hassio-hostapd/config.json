@@ -1,8 +1,8 @@
 {
   "name": "Hassio Hostapd",
-  "version": "1.0.7b5",
+  "version": "1.0.8",
   "slug": "hassio-hostapd",
-  "description": "Raspberry Pi as hotspot in hass.io",
+  "description": "Raspberry Pi as hotspot in hass.io using external USB dongles",
   "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
   "url": "https://github.com/joaofl/hassio-addons/tree/master/hassio-hostapd",
   "startup": "system",
@@ -35,7 +35,7 @@
     "address": "192.168.2.1",
     "netmask": "255.255.255.0",
     "broadcast": "192.168.2.254",
-    "interface": "wlp1s0u1u3"
+    "interface": ""
 
   },
   "schema": {
