@@ -30,23 +30,24 @@ NETMASK=$(jq --raw-output ".netmask" $CONFIG_PATH)
 BROADCAST=$(jq --raw-output ".broadcast" $CONFIG_PATH)
 INTERFACE=$(jq --raw-output ".interface" $CONFIG_PATH)
 
-reset_interfaces
-
-echo "Set nmcli managed no"
-nmcli dev set $INTERFACE managed no
-
 # Enforces required env variables
 required_vars=(SSID WPA_PASSPHRASE CHANNEL ADDRESS NETMASK BROADCAST)
 for required_var in "${required_vars[@]}"; do
     if [[ -z ${!required_var} ]]; then
-        error=1
         echo >&2 "Error: $required_var env variable not set."
+        exit 1
     fi
 done
 
-INTERFACES_AVAILABLE="$(ifconfig -a | grep wl | cut -d ' ' -f '1')"
 
+INTERFACES_AVAILABLE="$(ifconfig -a | grep wl | cut -d ' ' -f '1')"
 UNKNOWN=true
+
+if [[ -z $INTERFACE ]]; then
+        echo >&2 "Network interface not set. Please set one of the available:"
+        echo "$INTERFACES_AVAILABLE"
+        exit 1
+fi
 
 for OPTION in  ${INTERFACES_AVAILABLE}; do
     if [[ ${INTERFACE} == ${OPTION} ]]; then
@@ -54,24 +55,19 @@ for OPTION in  ${INTERFACES_AVAILABLE}; do
     fi 
 done
 
-if [[ -z $INTERFACE ]]; then
-        echo >&2 "Network interface not set. Please set one of the available:"
-        echo "$INTERFACES_AVAILABLE"
-        error=1
-fi
-
 if [[ $UNKNOWN == true ]]; then
         echo >&2 "Unknown network interface ${INTERFACE}. Please set one of the available:"
         echo "$INTERFACES_AVAILABLE"
-        error=1
+        exit 1
 fi
 
 
-if [[ -n $error ]]; then
-    exit 1
-else
-   echo >&2 "Network interface ${INTERFACE} set"
-fi
+reset_interfaces
+
+echo "Set nmcli managed no"
+nmcli dev set $INTERFACE managed no
+
+echo >&2 "Network interface ${INTERFACE} set"
 
 
 

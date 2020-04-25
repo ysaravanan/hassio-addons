@@ -1,19 +1,15 @@
 # hassio-hostapd-extended
 Enables an access point using USB Wifi dongle for your IoT devies on Home Assistant.
 
-It has the capability of using USB Ralink and other wifi dongles to create an access point to your IoT devices.
-It is a fork of the original hostapd addon (`https://github.com/davidramosweb/hassio-addons`), that adds support 
-to external USB dongles in order to allow some stable access point, given that the Broadcomm embedded on the rpi
-is has unstable operation and does not provide the reliability needed.
+It has the capability of using USB Ralink and other wifi dongles to create an access point to your IoT devices. It is a fork of the original hostapd addon (`https://github.com/davidramosweb/hassio-addons`), that adds support to external USB dongles in order to allow some stable access point, given that the Broadcomm embedded on the rpi is has unstable operation and does not provide the reliability needed.
 
 ### This Hass.io Addon
 
-This add-on allows you to use your Wifi connection as an access point to connect your different
-devices directly to Hassio network without access to the internet, without the need of a router.
+This add-on allows you to use your Wifi connection as an access point to connect your different devices directly to Hassio network without access to the internet, without the need of a router.
 
 ## Installation
 
-To use this repository with your own Hass.io installation please follow [the official instructions](https://www.home-assistant.io/hassio/installing_third_party_addons/) on the Home Assistant website with the following URL:
+To use this repository with your own Hass.io installation please follow [the official instructions](https://www.home-assistant.io/hassio installing_third_party_addons/) on the Home Assistant website with the following URL:
 
 ```txt
 https://github.com/joaofl/hassio-addons
