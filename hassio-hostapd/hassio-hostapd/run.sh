@@ -4,6 +4,7 @@
 term_handler(){
     echo "Stopping..."
     ifdown $INTERFACE
+    sleep 1
     ip link set $INTERFACE down
     ip addr flush dev $INTERFACE
     exit 0
@@ -23,6 +24,8 @@ ADDRESS=$(jq --raw-output ".address" $CONFIG_PATH)
 NETMASK=$(jq --raw-output ".netmask" $CONFIG_PATH)
 BROADCAST=$(jq --raw-output ".broadcast" $CONFIG_PATH)
 INTERFACE=$(jq --raw-output ".interface" $CONFIG_PATH)
+
+term_handler
 
 echo "Set nmcli managed no"
 nmcli dev set $INTERFACE managed no
@@ -60,8 +63,6 @@ echo "broadcast $BROADCAST"$'\n' >> /etc/network/interfaces
 
 ifdown $INTERFACE
 ifup $INTERFACE
-
-exit 0
 
 echo "Starting HostAP daemon ..."
 hostapd -d /hostapd.conf & wait ${!}
