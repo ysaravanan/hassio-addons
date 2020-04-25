@@ -45,7 +45,7 @@ UNKNOWN=true
 
 if [[ -z $INTERFACE ]]; then
         echo >&2 "Network interface not set. Please set one of the available:"
-        echo "$INTERFACES_AVAILABLE"
+        echo >&2 "${INTERFACES_AVAILABLE}"
         exit 1
 fi
 
@@ -57,7 +57,7 @@ done
 
 if [[ $UNKNOWN == true ]]; then
         echo >&2 "Unknown network interface ${INTERFACE}. Please set one of the available:"
-        echo "$INTERFACES_AVAILABLE"
+        echo >&2 "${INTERFACES_AVAILABLE}"
         exit 1
 fi
 
@@ -67,9 +67,7 @@ reset_interfaces
 echo "Set nmcli managed no"
 nmcli dev set $INTERFACE managed no
 
-echo >&2 "Network interface ${INTERFACE} set"
-
-
+echo "Network interface ${INTERFACE} set"
 
 # Setup hostapd.conf
 echo "Setup hostapd ..."
