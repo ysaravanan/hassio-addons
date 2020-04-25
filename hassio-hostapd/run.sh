@@ -61,9 +61,6 @@ if [[ $UNKNOWN == true ]]; then
         exit 1
 fi
 
-
-reset_interfaces
-
 echo "Set nmcli managed no"
 nmcli dev set $INTERFACE managed no
 
