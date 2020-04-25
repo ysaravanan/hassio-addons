@@ -44,7 +44,7 @@ for required_var in "${required_vars[@]}"; do
     fi
 done
 
-if [[ -z INTERFACE ]]; then
+if [[ -z $INTERFACE ]]; then
         echo >&2 "Network interface not set. Please set one of the available:"
         ifconfig -a | grep wl | cut -d ' ' -f '1'
         error=1
@@ -60,6 +60,8 @@ echo "Setup hostapd ..."
 echo "ssid=$SSID"$'\n' >> /hostapd.conf
 echo "wpa_passphrase=$WPA_PASSPHRASE"$'\n' >> /hostapd.conf
 echo "channel=$CHANNEL"$'\n' >> /hostapd.conf
+echo "interface=$INTERFACE"$'\n' >> /hostapd.conf
+
 
 # Setup interface
 echo "Setup interface ..."
@@ -74,6 +76,7 @@ echo "netmask $NETMASK"$'\n' >> /etc/network/interfaces
 echo "broadcast $BROADCAST"$'\n' >> /etc/network/interfaces
 
 ifdown $INTERFACE
+sleep 1
 ifup $INTERFACE
 
 echo "Starting HostAP daemon ..."

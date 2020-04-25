@@ -1,6 +1,6 @@
 {
   "name": "Hassio Hostapd",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "slug": "hassio-hostapd",
   "description": "Raspberry Pi as hotspot in hass.io using external USB dongles",
   "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
