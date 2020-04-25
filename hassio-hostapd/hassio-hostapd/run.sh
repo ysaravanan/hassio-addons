@@ -44,6 +44,13 @@ for required_var in "${required_vars[@]}"; do
     fi
 done
 
+if [[ -z INTERFACE ]]; then
+        echo >&2 "Network interface not set. Please set one of the available:"
+        ifconfig -a | grep wl | cut -d ' ' -f '1'
+        error=1
+        echo >&2 "Error: $required_var interface not set."
+fi
+
 if [[ -n $error ]]; then
     exit 1
 fi
