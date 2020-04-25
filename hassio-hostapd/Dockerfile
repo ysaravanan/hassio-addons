@@ -12,7 +12,6 @@ ENV LANG C.UTF-8
 RUN apk update && apk add --no-cache bash jq iw linux-firmware-other hostapd networkmanager net-tools sudo && rm -rf /var/cache/apk/*
 
 COPY hostapd.conf /
-COPY interfaces /etc/network/interfaces
 COPY run.sh /
 RUN chmod a+x /run.sh
 

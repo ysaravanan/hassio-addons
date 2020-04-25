@@ -44,36 +44,55 @@ for required_var in "${required_vars[@]}"; do
     fi
 done
 
+INTERFACES_AVAILABLE="$(ifconfig -a | grep wl | cut -d ' ' -f '1')"
+
+UNKNOWN=true
+
+for OPTION in  ${INTERFACES_AVAILABLE}; do
+    if [[ ${INTERFACE} == ${OPTION} ]]; then
+        UNKNOWN=false
+    fi 
+done
+
 if [[ -z $INTERFACE ]]; then
         echo >&2 "Network interface not set. Please set one of the available:"
-        ifconfig -a | grep wl | cut -d ' ' -f '1'
+        echo "$INTERFACES_AVAILABLE"
         error=1
-        echo >&2 "Error: $required_var interface not set."
 fi
+
+if [[ $UNKNOWN == true ]]; then
+        echo >&2 "Unknown network interface ${INTERFACE}. Please set one of the available:"
+        echo "$INTERFACES_AVAILABLE"
+        error=1
+fi
+
 
 if [[ -n $error ]]; then
     exit 1
+else
+   echo >&2 "Network interface ${INTERFACE} set"
 fi
+
+
 
 # Setup hostapd.conf
 echo "Setup hostapd ..."
-echo "ssid=$SSID"$'\n' >> /hostapd.conf
-echo "wpa_passphrase=$WPA_PASSPHRASE"$'\n' >> /hostapd.conf
-echo "channel=$CHANNEL"$'\n' >> /hostapd.conf
-echo "interface=$INTERFACE"$'\n' >> /hostapd.conf
+echo "ssid=${SSID}"$'\n' >> /hostapd.conf
+echo "wpa_passphrase=${WPA_PASSPHRASE}"$'\n' >> /hostapd.conf
+echo "channel=${CHANNEL}"$'\n' >> /hostapd.conf
+echo "interface=${INTERFACE}"$'\n' >> /hostapd.conf
 
 
 # Setup interface
 echo "Setup interface ..."
 
-#ip link set $INTERFACE down
-#ip addr flush dev $INTERFACE
-#ip addr add ${IP_ADDRESS}/24 dev $INTERFACE
-#ip link set $INTERFACE up
+IFFILE=/etc/network/interfaces
 
-echo "address $ADDRESS"$'\n' >> /etc/network/interfaces
-echo "netmask $NETMASK"$'\n' >> /etc/network/interfaces
-echo "broadcast $BROADCAST"$'\n' >> /etc/network/interfaces
+echo -n "" > ${IFFILE}
+echo "iface ${INTERFACE} inet static" >> ${IFFILE}
+echo "   address ${ADDRESS}" >> ${IFFILE}
+echo "   netmask ${NETMASK}" >> ${IFFILE}
+echo "   broadcast ${BROADCAST}" >> ${IFFILE}
 
 ifdown $INTERFACE
 sleep 1
