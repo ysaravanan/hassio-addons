@@ -64,9 +64,6 @@ fi
 echo "Set nmcli managed no"
 nmcli dev set $INTERFACE managed no
 
-echo "Resseting interfaces"
-reset_interfaces
-
 echo "Network interface set to ${INTERFACE}"
 
 # Setup hostapd.conf
@@ -80,11 +77,9 @@ echo "interface=${INTERFACE}" >> ${HCONFIG}
 echo "" >> ${HCONFIG}
 
 # Setup interface
-echo "Setup interface ..."
-
 IFFILE="/etc/network/interfaces"
 
-echo "Setup network interface..."
+echo "Setup interface ..."
 echo "" > ${IFFILE}
 echo "iface ${INTERFACE} inet static" >> ${IFFILE}
 echo "  address ${ADDRESS}" >> ${IFFILE}
@@ -92,8 +87,8 @@ echo "  netmask ${NETMASK}" >> ${IFFILE}
 echo "  broadcast ${BROADCAST}" >> ${IFFILE}
 echo "" >> ${IFFILE}
 
-ifdown $INTERFACE
-sleep 1
+echo "Resseting interfaces"
+reset_interfaces
 ifup $INTERFACE
 sleep 1
 
