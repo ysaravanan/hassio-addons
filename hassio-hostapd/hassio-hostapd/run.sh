@@ -61,5 +61,7 @@ echo "broadcast $BROADCAST"$'\n' >> /etc/network/interfaces
 ifdown $INTERFACE
 ifup $INTERFACE
 
+exit 0
+
 echo "Starting HostAP daemon ..."
 hostapd -d /hostapd.conf & wait ${!}
