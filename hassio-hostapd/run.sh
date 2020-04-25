@@ -64,14 +64,17 @@ fi
 echo "Set nmcli managed no"
 nmcli dev set $INTERFACE managed no
 
-echo "Network interface ${INTERFACE} set"
+echo "Resseting interfaces"
+reset_interfaces
+
+echo "Network interface set to ${INTERFACE}"
 
 # Setup hostapd.conf
 echo "Setup hostapd ..."
-echo "ssid=${SSID}"$'\n' >> /hostapd.conf
-echo "wpa_passphrase=${WPA_PASSPHRASE}"$'\n' >> /hostapd.conf
-echo "channel=${CHANNEL}"$'\n' >> /hostapd.conf
-echo "interface=${INTERFACE}"$'\n' >> /hostapd.conf
+echo "ssid=${SSID}" >> /hostapd.conf
+echo "wpa_passphrase=${WPA_PASSPHRASE}" >> /hostapd.conf
+echo "channel=${CHANNEL}" >> /hostapd.conf
+echo "interface=${INTERFACE}" >> /hostapd.conf
 
 
 # Setup interface
@@ -79,7 +82,6 @@ echo "Setup interface ..."
 
 IFFILE=/etc/network/interfaces
 
-echo -n "" > ${IFFILE}
 echo "iface ${INTERFACE} inet static" >> ${IFFILE}
 echo "   address ${ADDRESS}" >> ${IFFILE}
 echo "   netmask ${NETMASK}" >> ${IFFILE}
