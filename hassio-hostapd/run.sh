@@ -86,7 +86,6 @@ IFFILE="/etc/network/interfaces"
 
 echo "Setup network interface..."
 echo "" > ${IFFILE}
-echo "allow-hotplug ${INTERFACE}" >> ${IFFILE}
 echo "iface ${INTERFACE} inet static" >> ${IFFILE}
 echo "  address ${ADDRESS}" >> ${IFFILE}
 echo "  netmask ${NETMASK}" >> ${IFFILE}
