@@ -70,17 +70,19 @@ reset_interfaces
 echo "Network interface set to ${INTERFACE}"
 
 # Setup hostapd.conf
-echo "Setup hostapd ..."
-echo "ssid=${SSID}" >> /hostapd.conf
-echo "wpa_passphrase=${WPA_PASSPHRASE}" >> /hostapd.conf
-echo "channel=${CHANNEL}" >> /hostapd.conf
-echo "interface=${INTERFACE}\n" >> /hostapd.conf
+HCONFIG="/hostapd.conf"
 
+echo "Setup hostapd ..."
+echo "ssid=${SSID}" >> ${HCONFIG}
+echo "wpa_passphrase=${WPA_PASSPHRASE}" >> ${HCONFIG}
+echo "channel=${CHANNEL}" >> ${HCONFIG}
+echo "interface=${INTERFACE}" >> ${HCONFIG}
+echo "" >> ${HCONFIG}
 
 # Setup interface
 echo "Setup interface ..."
 
-IFFILE=/etc/network/interfaces
+IFFILE="/etc/network/interfaces"
 
 echo "Setup network interface..."
 echo "" > ${IFFILE}
@@ -88,7 +90,8 @@ echo "allow-hotplug ${INTERFACE}" >> ${IFFILE}
 echo "iface ${INTERFACE} inet static" >> ${IFFILE}
 echo "  address ${ADDRESS}" >> ${IFFILE}
 echo "  netmask ${NETMASK}" >> ${IFFILE}
-echo "  broadcast ${BROADCAST}\n" >> ${IFFILE}
+echo "  broadcast ${BROADCAST}" >> ${IFFILE}
+echo "" >> ${IFFILE}
 
 ifdown $INTERFACE
 sleep 1
@@ -96,4 +99,4 @@ ifup $INTERFACE
 sleep 1
 
 echo "Starting HostAP daemon ..."
-hostapd -d /hostapd.conf & wait ${!}
+hostapd -d ${HCONFIG} & wait ${!}
