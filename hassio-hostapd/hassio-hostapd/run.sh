@@ -1,12 +1,17 @@
 #!/bin/bash
 
 # SIGTERM-handler this funciton will be executed when the container receives the SIGTERM signal (when stopping)
-term_handler(){
-    echo "Stopping..."
+reset_interfaces(){
     ifdown $INTERFACE
     sleep 1
     ip link set $INTERFACE down
     ip addr flush dev $INTERFACE
+}
+
+term_handler(){
+    echo "Resseting interfaces"
+    reset_interfaces
+    echo "Stopping..."
     exit 0
 }
 
@@ -25,7 +30,7 @@ NETMASK=$(jq --raw-output ".netmask" $CONFIG_PATH)
 BROADCAST=$(jq --raw-output ".broadcast" $CONFIG_PATH)
 INTERFACE=$(jq --raw-output ".interface" $CONFIG_PATH)
 
-term_handler
+reset_interfaces
 
 echo "Set nmcli managed no"
 nmcli dev set $INTERFACE managed no
