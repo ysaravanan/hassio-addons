@@ -1,14 +1,15 @@
-# hassio-hostapd-mod
-Raspberry Pi as hotspot in hass.io
+# hassio-hostapd-extended
+Enables an access point using USB Wifi dongle for your IoT devies on Home Assistant.
 
-It adds the capability of using USB ralink and other wifi dongles to create an access point to your IoT devices
-
-It is a for of the original hostapd addon, that adds support to external USB dongles. Mainly in order to allow
-some stable access point, given that the broadcomm embedded on the rpi is unstable.
+It has the capability of using USB Ralink and other wifi dongles to create an access point to your IoT devices.
+It is a fork of the original hostapd addon (`https://github.com/davidramosweb/hassio-addons`), that adds support 
+to external USB dongles in order to allow some stable access point, given that the Broadcomm embedded on the rpi
+is has unstable operation and does not provide the reliability needed.
 
 ### This Hass.io Addon
 
-This add-on allows you  to use the Raspberry Pi as a hotspot to connect the different devices directly to the `hass.io` network without going through the router.
+This add-on allows you to use your Wifi connection as an access point to connect your different
+devices directly to Hassio network without access to the internet, without the need of a router.
 
 ## Installation
 
@@ -35,5 +36,6 @@ The available configuration options are as follows (this is filled in with some 
 ```
 If the interface is left blank, a list with 
 the available ones will be printed on the logs
+to choose from.
 
 **Note**: _This is just an example, don't copy and paste it! Create your own!_

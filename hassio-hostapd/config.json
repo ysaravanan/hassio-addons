@@ -1,10 +1,10 @@
 {
-  "name": "Hassio Hostapd",
-  "version": "1.0.3",
-  "slug": "hassio-hostapd",
-  "description": "Raspberry Pi as hotspot in hass.io",
+  "name": "Hassio Hostapd Extended",
+  "version": "1.0.10",
+  "slug": "hassio-hostapd-extended",
+  "description": "Access point for your IoT devives with configurable network interface",
   "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
-  "url": "https://github.com/davidramosweb/hassio-addons/tree/master/hassio-hostapd",
+  "url": "https://github.com/joaofl/hassio-addons/tree/master/hassio-hostapd",
   "startup": "system",
   "boot": "auto",
   "host_network": true,
@@ -32,9 +32,10 @@
     "ssid": "",
     "wpa_passphrase": "",
     "channel": "6",
-    "address": "192.168.99.1",
+    "address": "192.168.2.1",
     "netmask": "255.255.255.0",
-    "broadcast": "192.168.99.254"
+    "broadcast": "192.168.2.254",
+    "interface": ""
 
   },
   "schema": {
@@ -43,6 +44,7 @@
     "channel": "int",
     "address": "str",
     "netmask": "str",
-    "broadcast": "str"
+    "broadcast": "str",
+    "interface": "str"
   }
 } 

@@ -1,6 +1,18 @@
 # Changelog
 
-## [1.0.3]
+## [1.0.10]
+### Changed
+- Removed other addons from this repo
+- Removed package versions from setup, to avoid new installs problem
+
+### Added
+- Possibility of setting the access point with USB Wifi dongles.
+
+## [1.0.4 -> 1.0.9]
+### Changed
+- Versions used internally only, during development
+
+## [1.0.3] -> This fork
 ### Fixed
 - Update apk networkmanager and sudo in Dockefile. 
 
