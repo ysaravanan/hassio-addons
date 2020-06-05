@@ -61,6 +61,10 @@ if [[ $UNKNOWN == true ]]; then
         exit 1
 fi
 
+# This delay seems to be required, otherwise the
+# DHCP server will not come up on time
+sleep 20
+
 echo "Set nmcli managed no"
 nmcli dev set $INTERFACE managed no
 
