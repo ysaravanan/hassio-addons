@@ -60,6 +60,9 @@ if ! bashio::fs.file_exists "${LEASES}"; then
     touch "${LEASES}"
 fi
 
+# Waiting to start the DHCP server
+sleep 60
+
 # Start DHCP server
 bashio::log.info "Starting DHCP server..."
 exec /usr/sbin/dhcpd \
