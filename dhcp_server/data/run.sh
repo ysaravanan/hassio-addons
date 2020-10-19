@@ -61,6 +61,7 @@ if ! bashio::fs.file_exists "${LEASES}"; then
 fi
 
 # Waiting to start the DHCP server
+bashio::log.info "Delaying DHCP server start..."
 sleep 60
 
 # Start DHCP server
