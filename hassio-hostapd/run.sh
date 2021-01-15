@@ -111,7 +111,7 @@ DHCP_CONFIG="/etc/udhcpd.conf"
     echo "interface ${INTERFACE}" >> ${DHCP_CONFIG}
     udhcpd -f &
 
-while 1; do 
+while true; do 
     echo "Alive..."
     sleep 30
     #TODO: check if things are fine here
