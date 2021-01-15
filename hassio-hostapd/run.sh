@@ -110,3 +110,8 @@ DHCP_CONFIG="/etc/udhcpd.conf"
 if test ${DHCP_SERVER} = "true"; then
     echo "interface ${INTERFACE}" >> ${DHCP_CONFIG}
     udhcpd -f &
+
+while 1; do 
+    sleep 5
+    #TODO: check if things are fine here
+done
