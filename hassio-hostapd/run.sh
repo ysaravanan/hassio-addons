@@ -89,7 +89,7 @@ echo "" >> ${IFFILE}
 
 echo "Resseting interfaces"
 reset_interfaces
-ifup $INTERFACE
+ifup ${INTERFACE}
 sleep 1
 
 echo "Starting HostAP daemon ..."
@@ -98,20 +98,21 @@ hostapd ${HCONFIG} &
 sleep 2
 
 echo "Configuring IP tables for NAT"
-ALLOW_INTERNET="true"
-if test ${ALLOW_INTERNET} = "true"; then
+# ALLOW_INTERNET="true"
+# if test ${ALLOW_INTERNET} = "true"; then
     iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
     iptables -A FORWARD -i eth0 -o ${INTERFACE} -m state --state RELATED,ESTABLISHED -j ACCEPT
     iptables -A FORWARD -i ${INTERFACE} -o eth0 -j ACCEPT
 
 echo "Starting DHCP server..."
-DHCP_SERVER="true"
 DHCP_CONFIG="/etc/udhcpd.conf"
-if test ${DHCP_SERVER} = "true"; then
+# DHCP_SERVER="true"
+# if test ${DHCP_SERVER} = "true"; then
     echo "interface ${INTERFACE}" >> ${DHCP_CONFIG}
     udhcpd -f &
 
 while 1; do 
-    sleep 5
+    echo "Alive..."
+    sleep 30
     #TODO: check if things are fine here
 done
