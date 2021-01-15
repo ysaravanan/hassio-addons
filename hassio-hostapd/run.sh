@@ -29,6 +29,8 @@ ADDRESS=$(jq --raw-output ".address" $CONFIG_PATH)
 NETMASK=$(jq --raw-output ".netmask" $CONFIG_PATH)
 BROADCAST=$(jq --raw-output ".broadcast" $CONFIG_PATH)
 INTERFACE=$(jq --raw-output ".interface" $CONFIG_PATH)
+ALLOW_INTERNET=$(jq --raw-output ".interface" $CONFIG_PATH)
+DHCP_SERVER=$(jq --raw-output ".interface" $CONFIG_PATH)
 
 # Enforces required env variables
 required_vars=(SSID WPA_PASSPHRASE CHANNEL ADDRESS NETMASK BROADCAST)
@@ -43,26 +45,26 @@ done
 INTERFACES_AVAILABLE="$(ifconfig -a | grep wl | cut -d ' ' -f '1')"
 UNKNOWN=true
 
-if [[ -z $INTERFACE ]]; then
+if [[ -z ${INTERFACE} ]]; then
         echo >&2 "Network interface not set. Please set one of the available:"
         echo >&2 "${INTERFACES_AVAILABLE}"
         exit 1
 fi
 
-for OPTION in  ${INTERFACES_AVAILABLE}; do
+for OPTION in ${INTERFACES_AVAILABLE}; do
     if [[ ${INTERFACE} == ${OPTION} ]]; then
         UNKNOWN=false
     fi 
 done
 
-if [[ $UNKNOWN == true ]]; then
+if [[ ${UNKNOWN} == true ]]; then
         echo >&2 "Unknown network interface ${INTERFACE}. Please set one of the available:"
         echo >&2 "${INTERFACES_AVAILABLE}"
         exit 1
 fi
 
 echo "Set nmcli managed no"
-nmcli dev set $INTERFACE managed no
+nmcli dev set ${INTERFACE} managed no
 
 echo "Network interface set to ${INTERFACE}"
 
@@ -92,31 +94,30 @@ reset_interfaces
 ifup ${INTERFACE}
 sleep 1
 
-echo "Starting DHCP server..."
-DHCP_CONFIG="/etc/udhcpd.conf"
-# DHCP_SERVER="true"
-# if test ${DHCP_SERVER} = "true"; then
+if test ${DHCP_SERVER} = "true"; then
+    DHCP_CONFIG="/etc/udhcpd.conf"
+    echo "Starting DHCP server..."
     echo "interface ${INTERFACE}" >> ${DHCP_CONFIG}
-    touch /etc/var/lib/udhcpd/udhcpd.leases
     echo "udhcpd config:"
     cat ${DHCP_CONFIG}
-    
+    echo ""    
     udhcpd -f &
+fi
+
+if test ${ALLOW_INTERNET} = "true"; then
+    echo "Configuring IP tables for NAT"
+    iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+    iptables -A FORWARD -i eth0 -o ${INTERFACE} -m state --state RELATED,ESTABLISHED -j ACCEPT
+    iptables -A FORWARD -i ${INTERFACE} -o eth0 -j ACCEPT
+fi
+
+sleep 2
 
 echo "Starting HostAP daemon ..."
 hostapd ${HCONFIG} &
 
-sleep 2
-
-echo "Configuring IP tables for NAT"
-# ALLOW_INTERNET="true"
-# if test ${ALLOW_INTERNET} = "true"; then
-    iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-    iptables -A FORWARD -i eth0 -o ${INTERFACE} -m state --state RELATED,ESTABLISHED -j ACCEPT
-    iptables -A FORWARD -i ${INTERFACE} -o eth0 -j ACCEPT
-
 while true; do 
-    echo "Alive..."
-    sleep 30
-    #TODO: check if things are fine here
+    echo "Interface stats:"
+    ifconfig | grep ${INTERFACE} -A5
+    sleep 60
 done

@@ -35,8 +35,9 @@
     "address": "192.168.2.1",
     "netmask": "255.255.255.0",
     "broadcast": "192.168.2.254",
-    "interface": ""
-
+    "interface": "",
+    "allow_internet": "false",
+    "enable_dhcp": "true"
   },
   "schema": {
     "ssid": "str",
@@ -45,6 +46,8 @@
     "address": "str",
     "netmask": "str",
     "broadcast": "str",
-    "interface": "str"
+    "interface": "str",
+    "allow_internet": "str",
+    "enable_dhcp": "str"
   }
 } 
