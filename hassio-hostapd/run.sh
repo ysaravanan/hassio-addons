@@ -93,18 +93,20 @@ ifup $INTERFACE
 sleep 1
 
 echo "Starting HostAP daemon ..."
-hostapd -d ${HCONFIG} &
+hostapd ${HCONFIG} &
 
-DHCP_SERVER="true"
-DHCP_CONFIG="/etc/udhcpd.conf"
-if test ${DHCP_SERVER} = "true"; then
-    echo "interface ${INTERFACE}" >> ${DHCP_CONFIG}
-    udhcpd &
+sleep 2
 
+echo "Configuring IP tables for NAT"
 ALLOW_INTERNET="true"
 if test ${ALLOW_INTERNET} = "true"; then
     iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
     iptables -A FORWARD -i eth0 -o ${INTERFACE} -m state --state RELATED,ESTABLISHED -j ACCEPT
     iptables -A FORWARD -i ${INTERFACE} -o eth0 -j ACCEPT
 
-wait ${!}
+echo "Starting DHCP server..."
+DHCP_SERVER="true"
+DHCP_CONFIG="/etc/udhcpd.conf"
+if test ${DHCP_SERVER} = "true"; then
+    echo "interface ${INTERFACE}" >> ${DHCP_CONFIG}
+    udhcpd -f &

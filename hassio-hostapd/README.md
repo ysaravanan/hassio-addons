@@ -30,6 +30,8 @@ The available configuration options are as follows (this is filled in with some 
     "interface": ""
 }
 ```
+Set channel to 0 for automatically finding channels. 
+
 If the interface is left blank, a list with 
 the available ones will be printed on the logs
 to choose from.
