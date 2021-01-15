@@ -92,6 +92,17 @@ reset_interfaces
 ifup ${INTERFACE}
 sleep 1
 
+echo "Starting DHCP server..."
+DHCP_CONFIG="/etc/udhcpd.conf"
+# DHCP_SERVER="true"
+# if test ${DHCP_SERVER} = "true"; then
+    echo "interface ${INTERFACE}" >> ${DHCP_CONFIG}
+    touch /etc/var/lib/udhcpd/udhcpd.leases
+    echo "udhcpd config:"
+    cat ${DHCP_CONFIG}
+    
+    udhcpd -f &
+
 echo "Starting HostAP daemon ..."
 hostapd ${HCONFIG} &
 
@@ -103,13 +114,6 @@ echo "Configuring IP tables for NAT"
     iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
     iptables -A FORWARD -i eth0 -o ${INTERFACE} -m state --state RELATED,ESTABLISHED -j ACCEPT
     iptables -A FORWARD -i ${INTERFACE} -o eth0 -j ACCEPT
-
-echo "Starting DHCP server..."
-DHCP_CONFIG="/etc/udhcpd.conf"
-# DHCP_SERVER="true"
-# if test ${DHCP_SERVER} = "true"; then
-    echo "interface ${INTERFACE}" >> ${DHCP_CONFIG}
-    udhcpd -f &
 
 while true; do 
     echo "Alive..."
