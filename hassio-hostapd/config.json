@@ -1,6 +1,6 @@
 {
   "name": "Hassio Hostapd Extended",
-  "version": "1.0.11.17",
+  "version": "1.0.11.171",
   "slug": "hassio-hostapd-extended",
   "description": "Access point for your IoT devives with configurable network interface",
   "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
@@ -47,7 +47,7 @@
     "netmask": "str",
     "broadcast": "str",
     "interface": "str",
-    "allow_internet": "str",
-    "enable_dhcp": "str"
+    "allow_internet": "bool",
+    "enable_dhcp": "bool"
   }
 } 
