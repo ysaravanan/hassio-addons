@@ -102,6 +102,8 @@ if test ${DHCP_SERVER} = true; then
     cat ${DHCP_CONFIG}
     echo ""    
     udhcpd -f &
+else
+    echo "DHCP_SERVER_SETTINGS: ${DHCP_SERVER}"
 fi
 
 if test ${ALLOW_INTERNET} = true; then
