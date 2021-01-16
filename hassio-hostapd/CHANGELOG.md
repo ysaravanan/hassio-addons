@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.11.2]
+### Changed
+- Removed the external DHCP addon from this repo
+
+### Added
+- Support for Atheros based Wifi dongles
+- Settings to enable/disable internet access on the hotspot
+- Settings to enable/disable a DHCP server on the hotspot
+
 ## [1.0.10]
 ### Changed
 - Removed other addons from this repo
