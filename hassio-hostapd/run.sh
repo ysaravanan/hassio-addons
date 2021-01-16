@@ -29,8 +29,8 @@ ADDRESS=$(jq --raw-output ".address" $CONFIG_PATH)
 NETMASK=$(jq --raw-output ".netmask" $CONFIG_PATH)
 BROADCAST=$(jq --raw-output ".broadcast" $CONFIG_PATH)
 INTERFACE=$(jq --raw-output ".interface" $CONFIG_PATH)
-ALLOW_INTERNET=$(jq --raw-output ".interface" $CONFIG_PATH)
-DHCP_SERVER=$(jq --raw-output ".interface" $CONFIG_PATH)
+ALLOW_INTERNET=$(jq --raw-output ".allow_internet" $CONFIG_PATH)
+DHCP_SERVER=$(jq --raw-output ".enable_dhcp" $CONFIG_PATH)
 
 # Enforces required env variables
 required_vars=(SSID WPA_PASSPHRASE CHANNEL ADDRESS NETMASK BROADCAST)
@@ -102,8 +102,6 @@ if test ${DHCP_SERVER} = true; then
     cat ${DHCP_CONFIG}
     echo ""    
     udhcpd -f &
-else
-    echo "DHCP_SERVER_SETTINGS: ${DHCP_SERVER}"
 fi
 
 if test ${ALLOW_INTERNET} = true; then
