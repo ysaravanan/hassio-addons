@@ -94,7 +94,7 @@ reset_interfaces
 ifup ${INTERFACE}
 sleep 1
 
-if test ${DHCP_SERVER} = "true"; then
+if test ${DHCP_SERVER} = true; then
     DHCP_CONFIG="/etc/udhcpd.conf"
     echo "Starting DHCP server..."
     echo "interface ${INTERFACE}" >> ${DHCP_CONFIG}
@@ -104,7 +104,7 @@ if test ${DHCP_SERVER} = "true"; then
     udhcpd -f &
 fi
 
-if test ${ALLOW_INTERNET} = "true"; then
+if test ${ALLOW_INTERNET} = true; then
     echo "Configuring IP tables for NAT"
     iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
     iptables -A FORWARD -i eth0 -o ${INTERFACE} -m state --state RELATED,ESTABLISHED -j ACCEPT
