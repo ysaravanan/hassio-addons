@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.0.11.2]
+## [1.0.11.3]
 ### Changed
 - Removed the external DHCP addon from this repo
 
