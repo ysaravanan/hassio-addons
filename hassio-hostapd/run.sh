@@ -109,6 +109,11 @@ if test ${ALLOW_INTERNET} = true; then
     iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
     iptables -A FORWARD -i eth0 -o ${INTERFACE} -m state --state RELATED,ESTABLISHED -j ACCEPT
     iptables -A FORWARD -i ${INTERFACE} -o eth0 -j ACCEPT
+else
+    echo "Disabling NAT"
+    iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+    iptables -A FORWARD -i eth0 -o ${INTERFACE} -m state --state RELATED,ESTABLISHED -j DROP
+    iptables -A FORWARD -i ${INTERFACE} -o eth0 -j DROP
 fi
 
 sleep 2
