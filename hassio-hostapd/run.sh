@@ -111,9 +111,9 @@ if test ${ALLOW_INTERNET} = true; then
     iptables -A FORWARD -i ${INTERFACE} -o eth0 -j ACCEPT
 else
     echo "Disabling NAT"
-    iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-    iptables -A FORWARD -i eth0 -o ${INTERFACE} -m state --state RELATED,ESTABLISHED -j DROP
-    iptables -A FORWARD -i ${INTERFACE} -o eth0 -j DROP
+    iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+    iptables -D FORWARD -i eth0 -o ${INTERFACE} -m state --state RELATED,ESTABLISHED -j DROP
+    iptables -D FORWARD -i ${INTERFACE} -o eth0 -j DROP
 fi
 
 sleep 2
@@ -123,6 +123,6 @@ hostapd ${HCONFIG} &
 
 while true; do 
     echo "Interface stats:"
-    ifconfig | grep ${INTERFACE} -A5
-    sleep 60
+    ifconfig | grep ${INTERFACE} -A6
+    sleep 3600
 done

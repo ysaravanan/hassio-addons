@@ -1,11 +1,7 @@
-# hassio-hostapd-extended
-Enables an access point using USB Wifi dongle for your IoT devies on Home Assistant.
+# hassio-hotspot (previously hassio-hostapd-extended)
+Enables an access point using USB Wifi dongle for your IoT devies on Home Assistant (with embedded DHCP server). This is mostly usefull if you want to have a different network infrastructure for your IoT devices, and can not do it with the RPi onboard Wifi, due to stabilities issue. 
 
-It has the capability of using **USB Ralink and other wifi dongles** to create an access point to your IoT devices. It is a fork of the original hostapd addon (`https://github.com/davidramosweb/hassio-addons`), that adds support to external USB dongles in order to allow some stable access point, given that the Broadcomm embedded on the rpi is has unstable operation and does not provide the reliability needed.
-
-### This Hass.io Addon
-
-This add-on allows you to use your Wifi connection as an access point to connect your different devices directly to Hassio network without access to the internet, without the need of a router.
+It allows creating an access point **with optional a DHCP server**, to your IoT devices using extenral USB Wifi dongles, **Ralink, Atheros and others**. It began a fork of the hostapd addon, that I rebranded, given that it now does more than that: it adds DHCP server with selectable internet access to the devices on the hotspot. It also adds supports to external USB dongles in order to enable a stable access points, known that the onboard Broadcomm Wifi on the RPi has unstable operation and does not provide the reliability required.
 
 ## Installation
 
@@ -17,23 +13,24 @@ https://github.com/joaofl/hassio-addons
 
 ### Configuration
 
-The available configuration options are as follows (this is filled in with some example data):
+The available configuration options are as bellow. Make sure to edit
+according to your needs:
 
 ```
 {
     "ssid": "WIFI_NAME",
     "wpa_passphrase": "WIFI_PASSWORD",
-    "channel": "6",
+    "channel": "0",
     "address": "192.168.99.1",
     "netmask": "255.255.255.0",
     "broadcast": "192.168.99.254"
     "interface": ""
+    "allow_internet": false
+    "dhcp_server": true
 }
 ```
-Set channel to 0 for automatically finding channels. 
+When channel set to 0, it will automatically find the best channel. 
 
-If the interface is left blank, a list with 
-the available ones will be printed on the logs
-to choose from.
-
-**Note**: _This is just an example, don't copy and paste it! Create your own!_
+When the `interface` option is left blank, a list with the detected wlan
+interfaces will be printed on the logs and the addon will terminate. Set
+the correct `interface` value on the configuration then restart the addon.
