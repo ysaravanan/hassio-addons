@@ -74,6 +74,26 @@ nmcli dev set ${INTERFACE} managed no
 
 echo "Network interface set to ${INTERFACE}"
 
+# Configure iptables to enable/disable internet
+INTERNET_IF="eth0"
+
+RULE_3="POSTROUTING -o ${INTERNET_IF} -j MASQUERADE"
+RULE_4="FORWARD -i ${INTERNET_IF} -o ${INTERFACE} -m state --state RELATED,ESTABLISHED -j ACCEPT"
+RULE_5="FORWARD -i ${INTERFACE} -o ${INTERNET_IF} -j ACCEPT"
+
+echo "Deleting iptables"
+iptables -v -t nat -D $(echo ${RULE_3})
+iptables -v -D $(echo ${RULE_4})
+iptables -v -D $(echo ${RULE_5})
+
+if test ${ALLOW_INTERNET} = true; then
+    echo "Configuring iptables for NAT"
+    iptables -v -t nat -A $(echo ${RULE_3})
+    iptables -v -A $(echo ${RULE_4})
+    iptables -v -A $(echo ${RULE_5})
+fi
+
+
 # Setup hostapd.conf
 HCONFIG="/hostapd.conf"
 
@@ -117,19 +137,7 @@ if test ${DHCP_SERVER} = true; then
     udhcpd -f &
 fi
 
-if test ${ALLOW_INTERNET} = true; then
-    echo "Configuring IP tables for NAT"
-    iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-    iptables -A FORWARD -i eth0 -o ${INTERFACE} -m state --state RELATED,ESTABLISHED -j ACCEPT
-    iptables -A FORWARD -i ${INTERFACE} -o eth0 -j ACCEPT
-else
-    echo "Disabling NAT"
-    iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
-    iptables -D FORWARD -i eth0 -o ${INTERFACE} -m state --state RELATED,ESTABLISHED -j DROP
-    iptables -D FORWARD -i ${INTERFACE} -o eth0 -j DROP
-fi
-
-sleep 2
+sleep 1
 
 echo "Starting HostAP daemon ..."
 hostapd ${HCONFIG} &

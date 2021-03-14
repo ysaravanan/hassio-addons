@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.0]
+### Changed
+- Add possibility to configure the DHCP and Hosapd settings for better customization of the access point
+- Fix issue with enablind/disabling internet access not working before
+
+
 ## [1.0.11.5]
 ### Changed
 - Removed the external DHCP addon from this repo

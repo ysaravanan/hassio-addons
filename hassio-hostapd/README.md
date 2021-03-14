@@ -23,11 +23,17 @@ according to your needs:
     "channel": "0",
     "address": "192.168.2.1",
     "netmask": "255.255.255.0",
-    "broadcast": "192.168.22.254"
+    "broadcast": "192.168.2.254"
     "interface": ""
     "allow_internet": false
     "dhcp_server": true
+    "dhcp_start": "192.168.2.100",
+    "dhcp_end": "192.168.2.200",
+    "dhcp_dns": "1.1.1.1",
+    "dhcp_subnet": "255.255.255.0",
+    "dhcp_router": "192.168.2.1"
 }
+
 ```
 When channel set to 0, it will automatically find the best channel. 
 
