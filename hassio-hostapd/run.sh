@@ -30,7 +30,13 @@ NETMASK=$(jq --raw-output ".netmask" $CONFIG_PATH)
 BROADCAST=$(jq --raw-output ".broadcast" $CONFIG_PATH)
 INTERFACE=$(jq --raw-output ".interface" $CONFIG_PATH)
 ALLOW_INTERNET=$(jq --raw-output ".allow_internet" $CONFIG_PATH)
-DHCP_SERVER=$(jq --raw-output ".enable_dhcp" $CONFIG_PATH)
+
+DHCP_SERVER=$(jq --raw-output ".dhcp_enable" $CONFIG_PATH)
+DHCP_START=$(jq --raw-output ".dhcp_start" $CONFIG_PATH)
+DHCP_END=$(jq --raw-output ".dhcp_end" $CONFIG_PATH)
+DHCP_DNS=$(jq --raw-output ".dhcp_dns" $CONFIG_PATH)
+DHCP_SUBNET=$(jq --raw-output ".dhcp_subnet" $CONFIG_PATH)
+DHCP_ROUTER=$(jq --raw-output ".dhcp_router" $CONFIG_PATH)
 
 # Enforces required env variables
 required_vars=(SSID WPA_PASSPHRASE CHANNEL ADDRESS NETMASK BROADCAST)
@@ -95,12 +101,19 @@ ifup ${INTERFACE}
 sleep 1
 
 if test ${DHCP_SERVER} = true; then
-    DHCP_CONFIG="/etc/udhcpd.conf"
+    # Setup hdhcpd.conf
+    UCONFIG="/etc/udhcpd.conf"
+
+    echo "Setup udhcpd ..."
+    echo "interface    ${INTERFACE}"     >> ${UCONFIG}
+    echo "start        ${DHCP_START}"    >> ${UCONFIG}
+    echo "end          ${DHCP_END}"      >> ${UCONFIG}
+    echo "opt dns      ${DHCP_DNS}"      >> ${UCONFIG}
+    echo "opt subnet   ${DHCP_SUBNET}"   >> ${UCONFIG}
+    echo "opt router   ${DHCP_ROUTER}"   >> ${UCONFIG}
+    echo ""                              >> ${UCONFIG}
+
     echo "Starting DHCP server..."
-    echo "interface ${INTERFACE}" >> ${DHCP_CONFIG}
-    echo "udhcpd config:"
-    cat ${DHCP_CONFIG}
-    echo ""    
     udhcpd -f &
 fi
 

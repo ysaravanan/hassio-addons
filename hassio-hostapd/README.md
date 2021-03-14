@@ -21,9 +21,9 @@ according to your needs:
     "ssid": "WIFI_NAME",
     "wpa_passphrase": "WIFI_PASSWORD",
     "channel": "0",
-    "address": "192.168.99.1",
+    "address": "192.168.2.1",
     "netmask": "255.255.255.0",
-    "broadcast": "192.168.99.254"
+    "broadcast": "192.168.22.254"
     "interface": ""
     "allow_internet": false
     "dhcp_server": true
