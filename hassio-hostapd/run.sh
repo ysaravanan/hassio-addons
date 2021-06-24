@@ -30,6 +30,7 @@ NETMASK=$(jq --raw-output ".netmask" $CONFIG_PATH)
 BROADCAST=$(jq --raw-output ".broadcast" $CONFIG_PATH)
 INTERFACE=$(jq --raw-output ".interface" $CONFIG_PATH)
 ALLOW_INTERNET=$(jq --raw-output ".allow_internet" $CONFIG_PATH)
+HIDE_SSID=$(jq --raw-output ".hide_ssid" $CONFIG_PATH)
 
 DHCP_SERVER=$(jq --raw-output ".dhcp_enable" $CONFIG_PATH)
 DHCP_START=$(jq --raw-output ".dhcp_start" $CONFIG_PATH)
@@ -103,6 +104,11 @@ echo "wpa_passphrase=${WPA_PASSPHRASE}" >> ${HCONFIG}
 echo "channel=${CHANNEL}" >> ${HCONFIG}
 echo "interface=${INTERFACE}" >> ${HCONFIG}
 echo "" >> ${HCONFIG}
+
+if test ${HIDE_SSID} = true; then
+    echo "Hidding SSID"
+    echo "ignore_broadcast_ssid=1" >> ${HCONFIG}
+fi
 
 # Setup interface
 IFFILE="/etc/network/interfaces"
