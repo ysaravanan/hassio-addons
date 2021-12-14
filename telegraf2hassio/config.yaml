@@ -1,0 +1,32 @@
+---
+name: Telegraf2Hassio
+version: 0.1.0
+slug: telegraf2hassio
+description: Turn telegraf metrics into hassio self-discovered sensors
+arch:
+- armhf
+- armv7
+- aarch64
+- amd64
+- i386
+url: https://github.com/joaofl/hassio-addons/tree/master/telegraf2hassio
+startup: application
+services:
+- mqtt:need
+boot: auto
+host_network: true
+devices:
+- "/dev/mem"
+map:
+- config:rw
+- share:rw
+options:
+  mqtt_broker: localhost:1883
+  mqtt_user: joao
+  mqtt_pass: 151200hassio
+  telegraf_topic: telegraf/#
+schema:
+  mqtt_broker: str
+  mqtt_user: str
+  mqtt_pass: str
+  telegraf_topic: str
