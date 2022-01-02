@@ -29,6 +29,8 @@ class telegraf_parser():
         if len(jdata['tags']) > 1: 
             sensor_name += ('_' + jdata['tags'].get('device', "")).rstrip("_")
             sensor_name += ('_' + jdata['tags'].get('interface', "")).rstrip("_")
+            sensor_name += ('_' + jdata['tags'].get('feature', "")).rstrip("_")
+
 
         # Append this unique suffix to differ same-sensor-named topics
         # that contain different tags, that confuse hassio
@@ -46,14 +48,14 @@ class telegraf_parser():
         sensor_name = self.__get_sensor_name(jdata)
 
         # Add current host if unknown
-        current_host = self.add_host(host_name)
+        current_host, is_new_h = self.add_host(host_name)
         # Add unknown sensors to host
-        current_sensor = current_host.add_sensor(sensor_name)
+        current_sensor, is_new_s = current_host.add_sensor(sensor_name)
         # Add unknown measurements to each sensor 
         for measurement_name in self.__get_measurements_list(jdata):
-            current_sensor.add_measurement(measurement_name)
+            _, is_new_m = current_sensor.add_measurement(measurement_name)
 
-        return
+        return (is_new_s | is_new_h | is_new_m)
 
     def send(self, data):
         # After unknown are announced,
@@ -73,8 +75,9 @@ class telegraf_parser():
         if current_host is None:
             current_host = host(self, host_name)
             self.hosts[host_name] = current_host
+            return current_host, True
 
-        return current_host
+        return current_host, False
 
 
 class host():
@@ -98,8 +101,9 @@ class host():
         if current_sensor is None:
             current_sensor = sensor(self, sensor_name)
             self.sensors[sensor_name] = current_sensor
+            return current_sensor, True
 
-        return current_sensor
+        return current_sensor, False
 
 
 class sensor():
@@ -113,8 +117,9 @@ class sensor():
         if current_measurement is None:
             current_measurement = measurement(self, measurement_name)
             self.measurements[measurement_name] = current_measurement
+            return current_measurement, True
         
-        return current_measurement
+        return current_measurement, False
 
 class measurement():    
     def __init__(self, parent_sensor, name) -> None:

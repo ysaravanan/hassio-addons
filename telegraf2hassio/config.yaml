@@ -21,12 +21,14 @@ map:
 - config:rw
 - share:rw
 options:
-  mqtt_broker: localhost:1883
-  mqtt_user: joao
-  mqtt_pass: 151200hassio
+  mqtt_broker: localhost
+  mqtt_port: 1883
+  mqtt_user:
+  mqtt_pass:
   telegraf_topic: telegraf/#
 schema:
   mqtt_broker: str
+  mqtt_port: int
   mqtt_user: str
   mqtt_pass: str
   telegraf_topic: str
