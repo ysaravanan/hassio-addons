@@ -5,19 +5,14 @@ from paho.mqtt import client as mqtt_client
 from parser import telegraf_parser
 import argparse
 
-
 ###########################################################
 
 def data_received(client, userdata, data):
-    is_new = telegraf_data.announce_new(data)
     telegraf_data.send(data)
-    
-    if is_new:
-        logging.info(f"New measurement registered: {data.payload.decode()}")
 
-def data_transmit(topic, payload):
+def data_transmit(topic, payload, retain=False):
     # logging.debug(f"Publishing to {topic} the payload {payload}")
-    client.publish(topic, payload)
+    client.publish(topic, payload, retain=retain)
 
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
@@ -39,7 +34,7 @@ all_args = argparse.ArgumentParser()
 # Add arguments to the parser
 all_args.add_argument("--user", required=False)
 all_args.add_argument("--pass", required=False)
-all_args.add_argument("--broker-ip", required=False)
+all_args.add_argument("--broker-ip", required=False, default="192.168.1.5")
 all_args.add_argument("--port", required=False, default=1883)
 all_args.add_argument("--topic", required=False, default="telegraf/#")
 
@@ -53,7 +48,7 @@ client.on_connect = on_connect
 client.on_message = data_received
 
 # Connect to HA broker, and subscribe to telegraf topics
-client.connect(args['broker_ip'], args['port'])
+client.connect(args['broker_ip'], int(args['port']))
 client.subscribe(args['topic'])
 
 telegraf_data = telegraf_parser(data_transmit)
