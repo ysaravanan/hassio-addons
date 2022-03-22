@@ -1,3 +1,4 @@
 
 .DS_Store
-telegraf2hassio/source/__pycache__/*
+**/__pycache__/*
+.vscode/*
