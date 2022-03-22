@@ -1,14 +1,19 @@
 # Changelog
 
+## [1.1.2]
+### Changed
+- Decrease privilege levels of container for better security
+- Change config scheme to yaml and respective config interpreter
+- Rename the addon, since it no longer reflects the original
+
 ## [1.1.1]
 ### Changed
-- Add possibility to show or hide the SSID
+- Add possibility to show/hide the SSID
 
 ## [1.1.0]
 ### Changed
-- Add possibility to configure the DHCP and Hosapd settings for better customization of the access point
-- Fix issue with enablind/disabling internet access not working before
-
+- Add possibility to configure the DHCP and Hostapd settings for better customization of the access point
+- Fix issue with enabling/disabling internet access not working before
 
 ## [1.0.11.5]
 ### Changed
