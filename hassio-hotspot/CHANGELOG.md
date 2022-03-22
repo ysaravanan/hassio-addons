@@ -2,8 +2,8 @@
 
 ## [1.1.2]
 ### Changed
+- Add option to change the network interface that is connected to the internet
 - Decrease privilege levels of container for better security
-- Change config scheme to yaml and respective config interpreter
 - Rename the addon, since it no longer reflects the original
 
 ## [1.1.1]

@@ -29,6 +29,7 @@ ADDRESS=$(jq --raw-output ".address" $CONFIG_PATH)
 NETMASK=$(jq --raw-output ".netmask" $CONFIG_PATH)
 BROADCAST=$(jq --raw-output ".broadcast" $CONFIG_PATH)
 INTERFACE=$(jq --raw-output ".interface" $CONFIG_PATH)
+INTERNET_IF=$(jq --raw-output ".internet_interface" $CONFIG_PATH)
 ALLOW_INTERNET=$(jq --raw-output ".allow_internet" $CONFIG_PATH)
 HIDE_SSID=$(jq --raw-output ".hide_ssid" $CONFIG_PATH)
 
@@ -76,8 +77,6 @@ nmcli dev set ${INTERFACE} managed no
 echo "Network interface set to ${INTERFACE}"
 
 # Configure iptables to enable/disable internet
-INTERNET_IF="eth0"
-
 RULE_3="POSTROUTING -o ${INTERNET_IF} -j MASQUERADE"
 RULE_4="FORWARD -i ${INTERNET_IF} -o ${INTERFACE} -m state --state RELATED,ESTABLISHED -j ACCEPT"
 RULE_5="FORWARD -i ${INTERFACE} -o ${INTERNET_IF} -j ACCEPT"
