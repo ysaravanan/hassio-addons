@@ -8,7 +8,7 @@ import argparse
 ###########################################################
 
 def data_received(client, userdata, data):
-    telegraf_data.send(data)
+    tp.send(data)
 
 def data_transmit(topic, payload, retain=False):
     # logging.debug(f"Publishing to {topic} the payload {payload}")
@@ -23,7 +23,7 @@ def on_connect(client, userdata, flags, rc):
 
 # logger = logging.getLogger(__name__)
 logging.basicConfig(
-    format='%(asctime)s %(levelname)-8s %(message)s',
+    format='[%(asctime)s] %(levelname)-2s %(message)s',
     level=logging.INFO,
     datefmt='%H:%M:%S')
 
@@ -37,6 +37,8 @@ all_args.add_argument("--pass", required=False)
 all_args.add_argument("--broker-ip", required=False, default="192.168.1.5")
 all_args.add_argument("--port", required=False, default=1883)
 all_args.add_argument("--topic", required=False, default="telegraf/#")
+all_args.add_argument("--calc", required=False, default="")
+all_args.add_argument("--log-level", required=False, default="info")
 
 args = vars(all_args.parse_args())
 
@@ -51,7 +53,9 @@ client.on_message = data_received
 client.connect(args['broker_ip'], int(args['port']))
 client.subscribe(args['topic'])
 
-telegraf_data = telegraf_parser(data_transmit)
+# Pass the data transmit callback and the list of
+# values to calculate
+tp = telegraf_parser(data_transmit, args['calc'])
 
 logging.info("Setup finished")
 
