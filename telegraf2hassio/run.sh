@@ -21,6 +21,8 @@ MQTT_PORT=$(bashio::config 'mqtt_port')
 MQTT_USER=$(bashio::config 'mqtt_user')
 MQTT_PASS=$(bashio::config 'mqtt_pass')
 TELEGRAF_TOPIC=$(bashio::config 'telegraf_topic')
+CALC_RATE=$(bashio::config 'calc_rate')
+LOG_LEVEL=$(bashio::config 'log_level')
 
 # Enforces required env variables
 required_vars=(MQTT_BROKER MQTT_USER MQTT_PASS TELEGRAF_TOPIC)
@@ -31,11 +33,11 @@ for required_var in "${required_vars[@]}"; do
     fi
 done
 
-
-
 python3 /opt/telegraf2hassio/telegraf2hassio.py \
-                        --broker-ip=${MQTT_BROKER} \
-                        --port=${MQTT_PORT} \
-                        --user=${MQTT_USER} \
-                        --pass=${MQTT_PASS} \
-                        --topic=${TELEGRAF_TOPIC}
+                    --broker-ip=${MQTT_BROKER} \
+                    --port=${MQTT_PORT}        \
+                    --user=${MQTT_USER}        \
+                    --pass=${MQTT_PASS}        \
+                    --topic=${TELEGRAF_TOPIC}  \
+                    --calc=${CALC_RATE}        \
+                    --log-level=${LOG_LEVEL}

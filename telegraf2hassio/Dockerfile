@@ -1,10 +1,9 @@
 ARG BUILD_FROM
 FROM $BUILD_FROM
 
-MAINTAINER João Loureiro <joaofl@gmail.com>
+LABEL João Loureiro <joaofl@gmail.com>
 
 # Set shell
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ENV LANG C.UTF-8
 
