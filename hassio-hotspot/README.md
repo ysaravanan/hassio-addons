@@ -25,6 +25,7 @@ according to your needs:
     "netmask": "255.255.255.0",
     "broadcast": "192.168.2.254"
     "interface": ""
+    "interface_internet": "eth0"
     "allow_internet": false
     "dhcp_server": true
     "dhcp_start": "192.168.2.100",
