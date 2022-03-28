@@ -4,7 +4,8 @@ More add-ons for your Hass.io
 
 ## This repo includes the following addon (follow the link for more details):
 
-https://github.com/joaofl/hassio-addons/tree/master/hassio-hostapd
+- https://github.com/joaofl/hassio-addons/tree/master/hassio-hotspot
+- https://github.com/joaofl/hassio-addons/tree/master/telegraf2hassio
 
 ## Installation
 
