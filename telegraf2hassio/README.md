@@ -7,11 +7,9 @@ Instead, it translates Telegraf's native MQTT messages into Home Assistant self-
 
 ## Installation
 
-To use this repository with your own Hass.io installation please follow [the official instructions](https://www.home-assistant.io/hassio installing_third_party_addons/) on the Home Assistant website with the following URL:
+To use this repository with your own Home Assistant setup please follow [the official instructions](https://www.home-assistant.io/common-tasks/supervised/#installing-third-party-add-ons) on how to configure it.
 
-```txt
-https://github.com/joaofl/hassio-addons
-```
+Below the link to this addons source code @github [https://github.com/joaofl/hassio-addons](https://github.com/joaofl/hassio-addons)
 
 ## Configuration
 
@@ -45,6 +43,11 @@ If you are not sure about the names to expect, start the addon, and check the lo
 
 Below an example dashboard I brought up real quick. I really hope to see some much cooler ones once some dedicated people start to play around with it.
 
-![Example dashboard](resources/dashboard-example.png)
+![Example dashboard](https://github.com/joaofl/hassio-addons/blob/master/telegraf2hassio/resources/dashboard-example.png)
 
-Find also the source code to it [here](resources/example_dashboard.yaml)
+Find also the source code to it here: [example_dashboard.yaml](https://github.com/joaofl/hassio-addons/blob/master/telegraf2hassio/resources/example_dashboard.yaml)
+
+And the corresponding Telegraf config on my server side: [telegraf.conf](https://github.com/joaofl/hassio-addons/blob/master/telegraf2hassio/resources/telegraf.conf)
+Note that this is a reduced config file, only showing the uncommented lines of the original file by `cat /etc/telegraf/telegraf.conf | grep -v "#" | grep .`
+
+It is likely that other addons and sensors may work out of the box with this addon, but I cannot guarantee, since this is the only config I tested so far. If something goes wrong, feel free to make a PR and contribute to this addon :)
