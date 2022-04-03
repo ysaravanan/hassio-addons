@@ -10,6 +10,7 @@ ENV LANG C.UTF-8
 
 # Install requirements for add-on
 RUN apk update && apk add --no-cache    \
+    avahi                               \
     bash jq iw net-tools                \
     sudo busybox-extras                 \
     hostapd networkmanager iptables     \

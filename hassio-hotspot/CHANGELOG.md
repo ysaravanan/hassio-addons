@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.1.3]
+### Changed
+- Add avahi daemon to enable mDNS
+
 ## [1.1.2]
 ### Changed
 - Add option to change the network interface that is connected to the internet
