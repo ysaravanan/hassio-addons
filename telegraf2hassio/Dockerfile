@@ -8,10 +8,8 @@ LABEL João Loureiro <joaofl@gmail.com>
 ENV LANG C.UTF-8
 
 # Install requirements for add-on
-RUN apk update && apk add --no-cache bash python3 py3-pip  && \
+RUN apk update && apk add --no-cache bash python3 py3-paho-mqtt && \
                             rm -rf /var/cache/apk/*
-
-RUN pip3 install paho-mqtt
 
 COPY source/* /opt/telegraf2hassio/
 COPY run.sh /
