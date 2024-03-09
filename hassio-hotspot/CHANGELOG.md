@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.1.5]
+### Fixed
+- Fix missmatched interface name (thanks to @smbitech)
 
 ## [1.1.4]
 ### Changed
