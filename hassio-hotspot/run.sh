@@ -50,25 +50,25 @@ for required_var in "${required_vars[@]}"; do
 done
 
 
-INTERFACES_AVAILABLE="$(ifconfig -a | grep wl | cut -d ' ' -f '1')"
+INTERFACES_AVAILABLE="$(ifconfig -a | grep '^wl' | cut -d ':' -f '1')"
 UNKNOWN=true
 
 if [[ -z ${INTERFACE} ]]; then
-        echo >&2 "Network interface not set. Please set one of the available:"
-        echo >&2 "${INTERFACES_AVAILABLE}"
-        exit 1
+    echo >&2 "Network interface not set. Please set one of the available:"
+    echo >&2 "${INTERFACES_AVAILABLE}"
+    exit 1
 fi
 
 for OPTION in ${INTERFACES_AVAILABLE}; do
     if [[ ${INTERFACE} == ${OPTION} ]]; then
         UNKNOWN=false
-    fi 
+    fi
 done
 
 if [[ ${UNKNOWN} == true ]]; then
-        echo >&2 "Unknown network interface ${INTERFACE}. Please set one of the available:"
-        echo >&2 "${INTERFACES_AVAILABLE}"
-        exit 1
+    echo >&2 "Unknown network interface ${INTERFACE}. Please set one of the available:"
+    echo >&2 "${INTERFACES_AVAILABLE}"
+    exit 1
 fi
 
 echo "Set nmcli managed no"
