@@ -2287,11 +2287,11 @@ elif [[ "$SHARE_METHOD" == "nat" ]]; then
     
     [[ "$BANLAN" -eq 1 ]] && start_ban_lan
     
-    echo 1 > "/proc/sys/net/ipv4/ip_forward" || die "Failed enabling system ipv4 forwarding" # TODO maybe uneeded in '--no4' mode
+    # echo 1 > "/proc/sys/net/ipv4/ip_forward" || die "Failed enabling system ipv4 forwarding" # TODO maybe uneeded in '--no4' mode
     
-    if [[ $IPV6 -eq 1 ]]; then
-        echo 1 > "/proc/sys/net/ipv6/conf/all/forwarding" || die "Failed enabling system ipv6 forwarding" # TODO if '-o' used, set only 2 interfaces' bits
-    fi
+    # if [[ $IPV6 -eq 1 ]]; then
+    #     echo 1 > "/proc/sys/net/ipv6/conf/all/forwarding" || die "Failed enabling system ipv6 forwarding" # TODO if '-o' used, set only 2 interfaces' bits
+    # fi
     
     # to enable clients to establish PPTP connections we must
     # load nf_nat_pptp module

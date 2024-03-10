@@ -1,8 +1,7 @@
-# hassio-hotspot (previously hassio-hostapd-extended)
-Enables an access point using USB Wifi dongle for your IoT devies on Home Assistant (with embedded DHCP server). This is mostly usefull if you want to have a different network infrastructure for your IoT devices, and can not do it with the RPi onboard Wifi, due to stabilities issue. 
+# hassio-router
+This is a home assistant addon built on top of the linux-router from https://github.com/garywill/linux-router.
 
-It allows creating an access point **with optional a DHCP server**, to your IoT devices using extenral USB Wifi dongles, **Ralink, Atheros and others**. It began a fork of the hostapd addon, that I renamed, given that it now does more than that: it adds DHCP server with selectable internet access to the devices on the hotspot. It also adds supports to external USB dongles in order to enable a stable access points, known that the onboard Broadcomm Wifi on the RPi has unstable operation and does not provide the reliability required.
-
+It uses its extensive script to bringup an access point, with several customizations and configurations possible, as provided by the linux-router project.
 ## Installation
 
 To use this repository with your own Hass.io installation please follow [the official instructions](https://www.home-assistant.io/hassio installing_third_party_addons/) on the Home Assistant website with the following URL:
@@ -19,20 +18,11 @@ according to your needs:
 ```
 {
     "ssid": "WIFI_NAME",
-    "wpa_passphrase": "WIFI_PASSWORD",
+    "passphrase": "WIFI_PASS",
     "channel": "0",
     "address": "192.168.2.1",
-    "netmask": "255.255.255.0",
-    "broadcast": "192.168.2.254"
     "interface": ""
-    "interface_internet": "eth0"
     "allow_internet": false
-    "dhcp_server": true
-    "dhcp_start": "192.168.2.100",
-    "dhcp_end": "192.168.2.200",
-    "dhcp_dns": "1.1.1.1",
-    "dhcp_subnet": "255.255.255.0",
-    "dhcp_router": "192.168.2.1",
     "hide_ssid": false
 }
 

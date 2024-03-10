@@ -14,37 +14,63 @@ echo "Starting..."
 CONFIG_PATH=/data/options.json
 
 SSID=$(jq --raw-output ".ssid" $CONFIG_PATH)
-WPA_PASSPHRASE=$(jq --raw-output ".wpa_passphrase" $CONFIG_PATH)
+PASSPHRASE=$(jq --raw-output ".passphrase" $CONFIG_PATH)
 CHANNEL=$(jq --raw-output ".channel" $CONFIG_PATH)
 ADDRESS=$(jq --raw-output ".address" $CONFIG_PATH)
-NETMASK=$(jq --raw-output ".netmask" $CONFIG_PATH)
-BROADCAST=$(jq --raw-output ".broadcast" $CONFIG_PATH)
 INTERFACE=$(jq --raw-output ".interface" $CONFIG_PATH)
-INTERNET_IF=$(jq --raw-output ".internet_interface" $CONFIG_PATH)
 ALLOW_INTERNET=$(jq --raw-output ".allow_internet" $CONFIG_PATH)
 HIDE_SSID=$(jq --raw-output ".hide_ssid" $CONFIG_PATH)
+USER_ARGS=$(jq --raw-output ".address" $CONFIG_PATH)
 
-DHCP_SERVER=$(jq --raw-output ".dhcp_enable" $CONFIG_PATH)
-DHCP_START=$(jq --raw-output ".dhcp_start" $CONFIG_PATH)
-DHCP_END=$(jq --raw-output ".dhcp_end" $CONFIG_PATH)
-DHCP_DNS=$(jq --raw-output ".dhcp_dns" $CONFIG_PATH)
-DHCP_SUBNET=$(jq --raw-output ".dhcp_subnet" $CONFIG_PATH)
-DHCP_ROUTER=$(jq --raw-output ".dhcp_router" $CONFIG_PATH)
 
-# Enforces required env variables
-required_vars=(SSID WPA_PASSPHRASE CHANNEL ADDRESS NETMASK BROADCAST)
+# Enforces required variables
+required_vars=(SSID PASSPHRASE CHANNEL ADDRESS)
 for required_var in "${required_vars[@]}"; do
     if [[ -z ${!required_var} ]]; then
-        echo >&2 "Error: $required_var env variable not set."
+        echo >&2 "Error: $required_var variable not set."
         exit 1
     fi
 done
 
 
-./lnxrouter --ap wlan0 MyAP -p easypass --hostapd-debug 1 -o eth0 --dhcp-dns
+INTERFACES_AVAILABLE="$(ifconfig -a | grep '^wl' | cut -d ':' -f '1')"
+UNKNOWN=true
 
-# while true; do 
-#     echo "Interface stats:"
-#     ifconfig | grep ${INTERFACE} -A6
-#     sleep 3600
-# done
+if [[ -z ${INTERFACE} ]]; then
+    echo >&2 "Network interface not set. Please set one of the available:"
+    echo >&2 "${INTERFACES_AVAILABLE}"
+    exit 1
+fi
+
+for OPTION in ${INTERFACES_AVAILABLE}; do
+    if [[ ${INTERFACE} == ${OPTION} ]]; then
+        UNKNOWN=false
+    fi
+done
+
+if [[ ${UNKNOWN} == true ]]; then
+    echo >&2 "Unknown network interface ${INTERFACE}. Please set one of the available:"
+    echo >&2 "${INTERFACES_AVAILABLE}"
+    exit 1
+fi
+
+echo "Set nmcli managed no"
+nmcli dev set ${INTERFACE} managed no
+
+echo "Network interface set to ${INTERFACE}"
+
+
+EXTRA_ARGS=""
+
+if [[ ${ALLOW_INTERNET} = false ]]; then
+    EXTRA_ARGS+="-n "
+fi
+
+if [[ ${HIDE_SSID} = true ]]; then
+    EXTRA_ARGS+="--hidden "
+fi
+
+EXTRA_ARGS+="--ban-priv "
+EXTRA_ARGS+="-g ${ADDRESS} "
+
+./lnxrouter --ap ${INTERFACE} ${SSID} --password ${PASSPHRASE} ${EXTRA_ARGS} ${USER_ARGS}

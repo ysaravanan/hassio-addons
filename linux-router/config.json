@@ -2,7 +2,7 @@
   "name": "Linux Router",
   "version": "1.0.0",
   "slug": "linux-router",
-  "description": "Access point for your IoT devives with configurable network interface and DHCP server",
+  "description": "Access point for your IoT devives with configurable network interface, DHCP server and much more",
   "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
   "url": "https://github.com/joaofl/hassio-addons/tree/master/linux-router",
   "startup": "system",
@@ -28,38 +28,22 @@
   "init": false,
   "options": {
     "ssid": "",
-    "wpa_passphrase": "",
+    "passphrase": "",
     "channel": "0",
     "address": "192.168.2.1",
-    "netmask": "255.255.255.0",
-    "broadcast": "192.168.2.254",
     "interface": "",
-    "internet_interface": "eth0",
     "allow_internet": false,
-    "dhcp_enable": true,
-    "dhcp_start": "192.168.2.100",
-    "dhcp_end": "192.168.2.200",
-    "dhcp_dns": "1.1.1.1",
-    "dhcp_subnet": "255.255.255.0",
-    "dhcp_router": "192.168.2.1",
-    "hide_ssid": false
+    "hide_ssid": false,
+    "user_args": ""
   },
   "schema": {
     "ssid": "str",
-    "wpa_passphrase": "str",
+    "passphrase": "str",
     "channel": "int",
     "address": "str",
-    "netmask": "str",
-    "broadcast": "str",
     "interface": "str",
-    "internet_interface": "str",
     "allow_internet": "bool",
-    "dhcp_enable": "bool",
-    "dhcp_start": "str",
-    "dhcp_end": "str",
-    "dhcp_dns": "str",
-    "dhcp_subnet": "str",
-    "dhcp_router": "str",
-    "hide_ssid": "bool"
+    "hide_ssid": "bool",
+    "user_args": "str"
   }
 } 
