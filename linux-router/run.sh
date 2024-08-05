@@ -20,7 +20,7 @@ ADDRESS=$(jq --raw-output ".address" $CONFIG_PATH)
 INTERFACE=$(jq --raw-output ".interface" $CONFIG_PATH)
 ALLOW_INTERNET=$(jq --raw-output ".allow_internet" $CONFIG_PATH)
 HIDE_SSID=$(jq --raw-output ".hide_ssid" $CONFIG_PATH)
-USER_ARGS=$(jq --raw-output ".address" $CONFIG_PATH)
+USER_ARGS=$(jq --raw-output ".user_args" $CONFIG_PATH)
 
 
 # Enforces required variables
