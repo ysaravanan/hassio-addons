@@ -14,6 +14,9 @@ logging.basicConfig(
     datefmt='%H:%M:%S')
 
 
+def cleanout_string(string):
+    return string.replace("-", "_").replace("/", "_")
+
 class calc_measurement():
     def __init__(self, uid):
         self.id = uid
@@ -69,13 +72,13 @@ class telegraf_parser():
         uid = hashlib.sha1(str(self.jdata_recv['fields'].keys()).encode()).hexdigest()[0:2]
         sensor_name += f"_{uid}"
 
-        return sensor_name
+        return cleanout_string(sensor_name)
 
     def __get_unique_id(self, jdata, measurement_name):
             host_name = self.__get_host_name(jdata)
             sensor_name = self.__get_sensor_name(jdata)
 
-            return f"{host_name}_{sensor_name}_{measurement_name}"
+            return cleanout_string(f"{host_name}_{sensor_name}_{measurement_name}")
 
     def __get_measurements_list(self, jdata):
         return jdata['fields'].keys()
