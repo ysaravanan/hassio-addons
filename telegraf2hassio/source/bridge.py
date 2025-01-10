@@ -119,6 +119,14 @@ class telegraf_mqtt_bridge():
     def send(self, data):
         # Once all the unknown sensors are announced,
         # start sending their data only
+        
+        try:
+            decoded_data = data.payload.decode()
+            self.jdata_recv = json.loads(decoded_data)
+        except Exception as e:
+            logging.error(f"Failed to decode data payload. Ignoring message. Error description: {e}")
+            return False
+
         jdata = self.add_calc(self.jdata_recv)
 
         host_name = self.__get_host_name(jdata)
