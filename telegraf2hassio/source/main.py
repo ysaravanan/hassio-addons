@@ -2,11 +2,14 @@
 
 import logging
 from paho.mqtt import client as mqtt_client
-from parser import telegraf_parser
+from bridge import telegraf_mqtt_bridge
 import argparse
 
-###########################################################
-
+# This function is called when a message is received from the MQTT broker.
+# The message is then passed to the telegraf_mqtt_bridge
+# for processing, which in turn will call the data_transmit
+# function to publish the modified data to the MQTT broker
+# to be consumed by Home Assistant.
 def data_received(client, userdata, data):
     tp.send(data)
 
@@ -55,7 +58,7 @@ client.subscribe(args['topic'])
 
 # Pass the data transmit callback and the list of
 # values to calculate
-tp = telegraf_parser(data_transmit, args['calc'])
+tp = telegraf_mqtt_bridge(data_transmit, args['calc'])
 
 logging.info("Setup finished")
 

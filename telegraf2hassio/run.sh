@@ -33,7 +33,7 @@ for required_var in "${required_vars[@]}"; do
     fi
 done
 
-python3 /opt/telegraf2hassio/telegraf2hassio.py \
+python3 /opt/telegraf2hassio/main.py \
                     --broker-ip=${MQTT_BROKER} \
                     --port=${MQTT_PORT}        \
                     --user=${MQTT_USER}        \

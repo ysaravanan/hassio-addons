@@ -42,7 +42,7 @@ class calc_measurement():
         return rate
 
 
-class telegraf_parser():
+class telegraf_mqtt_bridge():
     def __init__(self, transmit_callback, cm_str_list) -> None:
         self.hosts = {}
         self.cm_dict = {}
@@ -119,7 +119,6 @@ class telegraf_parser():
     def send(self, data):
         # Once all the unknown sensors are announced,
         # start sending their data only
-        self.jdata_recv = json.loads(data.payload.decode())
         jdata = self.add_calc(self.jdata_recv)
 
         host_name = self.__get_host_name(jdata)
