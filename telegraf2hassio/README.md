@@ -28,13 +28,13 @@ options:
 ```
 
 The `calc_rate` is an optional argument, but it allows to add calculated rate measurements on top of the measurements already provided by Telegraf.
-For example, if you want know the data rate on a given ethernet port, then the `calc_rate` setting should look like below: 
+For example, if you want know the data rate on a given ethernet port, then the `calc_rate` setting should look like below:
 
 ```yaml
 myserver_net_enp2s0_12_bytes_recv,nuvem_net_enp2s0_12_bytes_sent
 ```
 where `myserver` is the Telegraf client name, `net` is the sensor name, `enp2s0_12` is the device name, followed by its unique ID (`12`), and finally the measurement name `bytes_sent`.
-Having added the settings above to `calc_rate` (adapted to your setup names), another measurement will be announced via MQTT, with the same name ending with `_dt`, containing the calculated rate of change for that specific measurement. 
+Having added the settings above to `calc_rate` (adapted to your setup names), another measurement will be announced via MQTT, with the same name ending with `_dt`, containing the calculated rate of change for that specific measurement.
 Multiple rate measurements can be added comma separated.
 
 If you are not sure about the names to expect, start the addon, and check the logs after the first batch of data is received. It will show the host name, as well as of all sensors and measurements discovered.
@@ -43,7 +43,7 @@ If you are not sure about the names to expect, start the addon, and check the lo
 
 Below an example dashboard I brought up real quick. I really hope to see some much cooler ones once some dedicated people start to play around with it.
 
-![Example dashboard](https://github.com/joaofl/hassio-addons/blob/master/telegraf2hassio/resources/dashboard-example.png)
+![Example dashboard](https://github.com/joaofl/hassio-addons/blob/master/telegraf2hassio/resources/dashboard-example.png?raw=true)
 
 Find also the source code to it here: [example_dashboard.yaml](https://github.com/joaofl/hassio-addons/blob/master/telegraf2hassio/resources/example_dashboard.yaml)
 
